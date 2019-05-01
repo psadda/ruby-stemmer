@@ -36,16 +36,15 @@ if RUBY_PLATFORM =~ /darwin/
   # see: man compat
   if ENV['COMMAND_MODE'] == 'legacy'
     $stdout << "Setting compat mode to unix2003\n."
-    ENV['COMMAND_MODE']= 'unix2003'
+    ENV['COMMAND_MODE'] = 'unix2003'
   end
 end
 
 # make libstemmer_c
-original_dir = Dir.pwd
-Dir.chdir(LIBSTEMMER)
-system "#{make} libstemmer.o"
-Dir.chdir(original_dir)
-exit unless $? == 0
+in_dir LIBSTEMMER do
+  system "#{make} libstemmer.o"
+  exit(1) unless $? == 0
+end
 
 $CFLAGS  += " -I#{File.expand_path(File.join(LIBSTEMMER, 'include'))} "
 $libs    += " -L#{LIBSTEMMER} #{File.expand_path(File.join(LIBSTEMMER, 'libstemmer.o'))} "
