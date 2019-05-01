@@ -1,5 +1,5 @@
 module Lingua
   class Stemmer
-    VERSION = "1.0.0"
+    VERSION = "0.9.6"
   end
 end
