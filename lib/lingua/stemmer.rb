@@ -1,9 +1,4 @@
-if RUBY_PLATFORM =~/(mswin|mingw)/i
-  require "lingua/#{RUBY_VERSION.sub(/\.\d+$/, '')}/stemmer_native"
-else
-  require 'lingua/stemmer_native'
-end
-
+require 'lingua/stemmer_native'
 require 'lingua/version'
 
 module Lingua
