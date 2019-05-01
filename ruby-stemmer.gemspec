@@ -18,12 +18,11 @@ Gem::Specification.new do |s|
   s.extensions = ["ext/lingua/extconf.rb"]
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.rdoc"]
-  s.files = `git ls-files`.split("\n")
+  s.files = `git ls-files`.split
   s.homepage = "http://github.com/aurelian/ruby-stemmer"
   s.licenses = ["MIT"]
   s.summary = "Expose libstemmer_c to Ruby."
 
-  s.add_development_dependency 'rake-compiler', '~> 0.9'
   s.add_development_dependency 'minitest', '~> 5.5'
   s.add_development_dependency 'rdoc', '~> 4.2'
 end
