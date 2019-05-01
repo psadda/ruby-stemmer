@@ -1,12 +1,21 @@
 ENV['RC_ARCHS'] = '' if RUBY_PLATFORM =~ /darwin/
 require "mkmf"
 
+# Do something in a given directory, then switch back to the original directory
+# when finished.
+def in_dir(dir)
+  original_dir = Dir.pwd
+  Dir.chdir(dir)
+  yield
+  Dir.chdir(original_dir)
+end
+
 ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
 LIBSTEMMER = File.join(ROOT, 'libstemmer_c')
 
 # build libstemmer_c
 # FreeBSD make is gmake
-make= (RUBY_PLATFORM =~ /freebsd/)? 'gmake' : 'make'
+make = (RUBY_PLATFORM =~ /freebsd/)? 'gmake' : 'make'
 
 # MacOS architecture mess up
 if RUBY_PLATFORM =~ /darwin/
@@ -17,7 +26,7 @@ if RUBY_PLATFORM =~ /darwin/
 
   # see: #issue/3, #issue/5
   begin
-    ENV['ARCHFLAGS']= "-arch " + %x[file #{File.expand_path(File.join(Config::CONFIG['bindir'], Config::CONFIG['RUBY_INSTALL_NAME']))}].strip!.match(/executable (.+)$/)[1] unless ENV['ARCHFLAGS'].nil?
+    ENV['ARCHFLAGS'] = "-arch " + %x[file #{File.expand_path(File.join(Config::CONFIG['bindir'], Config::CONFIG['RUBY_INSTALL_NAME']))}].strip!.match(/executable (.+)$/)[1] unless ENV['ARCHFLAGS'].nil?
   rescue
     $stderr << "Failed to get your ruby executable architecture.\n"
     $stderr << "Please specify one using $ARCHFLAGS environment variable.\n"
