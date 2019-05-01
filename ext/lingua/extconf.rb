@@ -31,11 +31,12 @@ if RUBY_PLATFORM =~ /darwin/
   end
 end
 
-# make libstemmer_c. unless we're cross-compiling.
-unless RUBY_PLATFORM =~ /i386-mingw32/
-  system "cd #{LIBSTEMMER}; #{make} libstemmer.o; cd #{ROOT};"
-  exit unless $? == 0
-end
+# make libstemmer_c
+original_dir = Dir.pwd
+Dir.chdir(LIBSTEMMER)
+system "#{make} libstemmer.o"
+Dir.chdir(original_dir)
+exit unless $? == 0
 
 $CFLAGS  += " -I#{File.expand_path(File.join(LIBSTEMMER, 'include'))} "
 $libs    += " -L#{LIBSTEMMER} #{File.expand_path(File.join(LIBSTEMMER, 'libstemmer.o'))} "
